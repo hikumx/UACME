@@ -1,1 +1,25 @@
+name: Compilar UACMe
 
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: windows-2022
+
+    steps:
+    - name: Baixar o codigo
+      uses: actions/checkout@v4
+
+    - name: Adicionar MSBuild ao comando
+      uses: microsoft/setup-msbuild@v2
+
+    - name: Compilar Solucao do UACMe
+      run: |
+        msbuild uacme.sln /p:Configuration=Release /p:Platform=x64
+
+    - name: Enviar o executavel pronto
+      uses: actions/upload-artifact@v4
+      with:
+        name: uacme-compilado
+        path: Source/Akagi/bin/x64/Release/Akagi.exe
